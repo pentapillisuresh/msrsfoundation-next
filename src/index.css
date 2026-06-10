@@ -1,0 +1,224 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-sans text-dark bg-primary overflow-x-hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold;
+  }
+}
+
+/* Global styles for the premium design */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* * {
+  font-family: 'Inter', sans-serif;
+} */
+
+.container-custom {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Custom animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+[data-aos="fade-up"] {
+  animation: fade-up 0.8s ease-out forwards;
+}
+
+[data-aos="fade-in"] {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+/* Gradient text utility */
+.bg-gradient-to-r {
+  background-size: 200% auto;
+  transition: all 0.3s ease;
+}
+
+.bg-gradient-to-r:hover {
+  background-position: right center;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Glass morphism effect */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+/* Custom focus styles */
+button:focus, 
+a:focus {
+  outline: none;
+  ring: 2px solid #667eea;
+  ring-offset: 2px;
+}
+
+/* Loading animation for premium feel */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Add to your global CSS file */
+.icon-green-filter {
+  filter: brightness(0) saturate(100%) invert(48%) sepia(13%) saturate(620%) hue-rotate(62deg) brightness(94%) contrast(87%);
+}
+
+/* For hover effect */
+.group:hover .icon-green-filter {
+  filter: brightness(0) saturate(100%) invert(35%) sepia(8%) saturate(800%) hue-rotate(50deg) brightness(95%) contrast(90%);
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+@keyframes loading-dot {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-loading-dot {
+  animation: loading-dot 1.2s ease-in-out infinite;
+}
+
+
+@keyframes extrude3d {
+  0%, 100% {
+    transform: translateZ(0) rotateX(10deg);
+  }
+  50% {
+    transform: translateZ(30px) rotateX(15deg);
+  }
+}
+
+.animate-3d-extrude {
+  animation: extrude3d 3s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 0 0 5px #d1a284, 0 0 10px #d1a284, 0 0 20px #d1a284, 0 0 40px #d1a284, 0 1px 0 #8B6914, 0 2px 0 #7A5C10, 0 3px 0 #694F0C, 0 4px 0 #584208, 0 5px 0 #473504;
+  }
+  50% {
+    text-shadow: 0 0 10px #d1a284, 0 0 20px #d1a284, 0 0 40px #d1a284, 0 0 80px #d1a284, 0 1px 0 #8B6914, 0 2px 0 #7A5C10, 0 3px 0 #694F0C, 0 4px 0 #584208, 0 5px 0 #473504;
+  }
+}
+
+@keyframes border3d {
+  0% {
+    transform: scaleX(0.5) translateZ(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleX(1.2) translateZ(20px);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0.5) translateZ(0);
+    opacity: 0.5;
+  }
+}
+
+.animate-3d-border {
+  animation: border3d 2s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes bounce3d {
+  0%, 100% {
+    transform: translateY(0) translateZ(0);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+  }
+  50% {
+    transform: translateY(-15px) translateZ(30px);
+    box-shadow: 0 15px 20px rgba(0,0,0,0.4);
+  }
+}
+
+
+
