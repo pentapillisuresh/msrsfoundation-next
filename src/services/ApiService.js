@@ -80,6 +80,46 @@ const ApiService = (() => {
 
     patch: (url, data, config = {}) =>
       axiosInstance.patch(url, data, config),
+
+    // ========== BLOG SPECIFIC METHODS ==========
+    
+    // Get all blogs (published only for website)
+    getBlogs: (params = {}) => {
+      const queryString = new URLSearchParams(params).toString();
+      return axiosInstance.get(`/blogs${queryString ? `?${queryString}` : ''}`);
+    },
+
+    // Get single blog by ID
+    getBlogById: (id) => 
+      axiosInstance.get(`/blogs/${id}`),
+
+    // Create blog (admin only)
+    createBlog: (formData) => 
+      axiosInstance.post('/blogs/', formData),
+
+    // Update blog (admin only)
+    updateBlog: (id, formData) => 
+      axiosInstance.put(`/blogs/${id}`, formData),
+
+    // Delete blog (admin only)
+    deleteBlog: (id) => 
+      axiosInstance.delete(`/blogs/${id}`),
+
+    // Update blog status (admin only)
+    updateBlogStatus: (id, status) => 
+      axiosInstance.patch(`/blogs/${id}/status`, { status }),
+
+    // Get blog views
+    getBlogViews: (id) => 
+      axiosInstance.get(`/blogs/${id}/views`),
+
+    // Increment blog views
+    incrementBlogViews: (id) => 
+      axiosInstance.post(`/blogs/${id}/views`),
+
+    // Get blogs count (admin only)
+    getBlogsCount: () => 
+      axiosInstance.get('/blogs/count'),
   };
 })();
 

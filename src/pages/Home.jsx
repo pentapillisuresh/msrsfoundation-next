@@ -9,6 +9,7 @@ import SustainableGoals from '../components/Home/SustainableGoals';
 import Services from "../components/Home/Services"
 import About from "../components/Home/About"
 import GovernmentRegistrations from "../components/Home/GovernmentRegistrations"
+import BlogSection from "../components/Home/BlogSection";
 
 const Home = () => {
   return (
@@ -22,6 +23,7 @@ const Home = () => {
       <WhatWeDo />
       <WhyChooseUs />
       <EventsInitiatives />
+         <BlogSection /> {/* Add this component */}
       <Testimonials />
     </div>
   );
