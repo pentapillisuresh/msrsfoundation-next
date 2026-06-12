@@ -53,6 +53,7 @@ const StatutoryCertificates = () => {
   
   // State for documents from backend - NO HARDCODE DATA
   const [documents, setDocuments] = useState([]);
+  const [governmentApprovals, setGovernmentApprovals] = useState([]);
   const [loadingDocuments, setLoadingDocuments] = useState(true);
   const [documentsError, setDocumentsError] = useState(null);
 
@@ -72,14 +73,14 @@ const StatutoryCertificates = () => {
 
   const countries = ["India", "United States", "United Kingdom", "Canada", "Australia", "Germany", "France", "UAE", "Singapore", "Other"];
 
-  const governmentApprovals = [
-    { title: "Ministry of Corporate Affairs", description: "Section 8 Registration", status: "Approved", date: "2020", ref: "U85300AP2020NPL123456" },
-    { title: "CSR-1 Registration", description: "Mandatory for CSR funds", status: "Active", date: "2021", ref: "CSR00012345" },
-    { title: "Income Tax - 12A", description: "Tax exemption for NGO", status: "Registered", date: "2020", ref: "12A/2020-21/1234" },
-    { title: "Income Tax - 80G", description: "Donor tax benefit", status: "Certified", date: "2020", ref: "80G/2020-21/5678" },
-    { title: "NITI Aayog Darpan", description: "Government NGO registration", status: "Registered", date: "2020", ref: "AP/2020/0123456" },
-    { title: "FCRA", description: "For international funding", status: "Applied", date: "2024", ref: "Pending" }
-  ];
+  // const governmentApprovals = [
+  //   { title: "Ministry of Corporate Affairs", description: "Section 8 Registration", status: "Approved", date: "2020", ref: "U85300AP2020NPL123456" },
+  //   { title: "CSR-1 Registration", description: "Mandatory for CSR funds", status: "Active", date: "2021", ref: "CSR00012345" },
+  //   { title: "Income Tax - 12A", description: "Tax exemption for NGO", status: "Registered", date: "2020", ref: "12A/2020-21/1234" },
+  //   { title: "Income Tax - 80G", description: "Donor tax benefit", status: "Certified", date: "2020", ref: "80G/2020-21/5678" },
+  //   { title: "NITI Aayog Darpan", description: "Government NGO registration", status: "Registered", date: "2020", ref: "AP/2020/0123456" },
+  //   { title: "FCRA", description: "For international funding", status: "Applied", date: "2024", ref: "Pending" }
+  // ];
 
   // Fetch documents from backend API - NO HARDCODE
   const fetchDocuments = async () => {
@@ -115,16 +116,29 @@ const StatutoryCertificates = () => {
         }));
         
         console.log('Transformed documents:', transformedDocuments);
-        setDocuments(transformedDocuments);
-      } else {
+        const certificates = transformedDocuments.filter(
+          item => item.documentType === "Certificate"
+        );
+        
+        const auditReports = transformedDocuments.filter(
+          item => item.documentType === "Audit Report"
+        );
+        
+        setDocuments(certificates);
+        setGovernmentApprovals(auditReports);
+            } else {
         console.error('Failed to fetch documents:', data);
         setDocumentsError('No documents found');
         setDocuments([]);
+        setGovernmentApprovals([]);
+
       }
     } catch (error) {
       console.error('Error fetching documents:', error);
       setDocumentsError('Failed to load documents. Please try again later.');
       setDocuments([]);
+      setGovernmentApprovals([]);
+
     } finally {
       setLoadingDocuments(false);
     }
