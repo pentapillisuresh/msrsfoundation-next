@@ -183,7 +183,7 @@ const Header = () => {
               <div className="relative">
                 <img 
                   src="/images/msrs.png" 
-                  alt="MSRS Logo"
+                  alt="MAHA SHREE RUDRA SAMSTHANAM FOUNDATION"
                   className={`relative w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain transition-all duration-300 group-hover:scale-105 ${
                     !scrolled ? 'brightness-0 invert' : ''
                   }`}
