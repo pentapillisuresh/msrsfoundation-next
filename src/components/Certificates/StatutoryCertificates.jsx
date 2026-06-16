@@ -172,7 +172,7 @@ const StatutoryCertificates = () => {
 
   // Check if user is already verified from localStorage on component mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('msrs_verified_user');
+    const storedUser = localStorage.getItem('msrs_certificate_verified_user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
       const verifiedTime = new Date(user.verificationTimestamp);
@@ -183,7 +183,7 @@ const StatutoryCertificates = () => {
         setUserData(user);
         setIsVerified(true);
       } else {
-        localStorage.removeItem('msrs_verified_user');
+        localStorage.removeItem('msrs_certificate_verified_user');
       }
     }
     
@@ -239,11 +239,24 @@ const StatutoryCertificates = () => {
 
       if (data.success) {
         setAccessLogData(data.data.accessLog);
-        const receivedOtp = data.data.OTP;
-        setGeneratedOtp(receivedOtp);
-        setCountdown(60);
-        setResendDisabled(true);
-        setStep(2);
+       const receivedOtp = data.data.OTP;
+setGeneratedOtp(receivedOtp);
+
+const smsMessage =
+  `Dear ${formData.name}, use OTP ${receivedOtp} to securely access Statutory Certificates and Legal Documents. Valid for 10 minutes. MAHA SHREE RUDRA SAMSTHANAM FOUNDATION | www.msrsfoundation.org`;
+
+try {
+  fetch(
+    `https://pgapi.smartping.ai/fe/api/v1/send?username=Rudrasamsthanam.trans&password=TG6QI&unicode=false&from=MSRSFD&to=${formData.phoneNumber}&text=${encodeURIComponent(smsMessage)}&dltContentId=YOUR_DLT_ID`,
+    {
+      mode: "no-cors"
+    }
+  ).catch(() => {});
+} catch (e) {}
+
+setCountdown(60);
+setResendDisabled(true);
+setStep(2);
       } else {
         setError(data.message || 'Failed to generate OTP. Please try again.');
       }
@@ -295,7 +308,7 @@ const StatutoryCertificates = () => {
           otpUsed: otp
         };
         
-        localStorage.setItem('msrs_verified_user', JSON.stringify(userInfo));
+        localStorage.setItem('msrs_certificate_verified_user', JSON.stringify(userInfo));
         
         setUserData(userInfo);
         setIsVerified(true);
@@ -365,7 +378,7 @@ const StatutoryCertificates = () => {
 
   const handleViewCertificate = (cert) => {
     setCertificateToView(cert);
-    const storedUser = localStorage.getItem('msrs_verified_user');
+    const storedUser = localStorage.getItem('msrs_certificate_verified_user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
       const verifiedTime = new Date(user.verificationTimestamp);
@@ -377,7 +390,7 @@ const StatutoryCertificates = () => {
         setShowModal(true);
         setCertificateToView(null);
       } else {
-        localStorage.removeItem('msrs_verified_user');
+        localStorage.removeItem('msrs_certificate_verified_user');
         setIsVerified(false);
         setUserData(null);
         setShowVerificationPopup(true);
@@ -412,7 +425,7 @@ const StatutoryCertificates = () => {
   };
 
   const clearVerification = () => {
-    localStorage.removeItem('msrs_verified_user');
+    localStorage.removeItem('msrs_certificate_verified_user');
     setIsVerified(false);
     setUserData(null);
     alert('Verification cleared. Please verify again to view certificates.');
@@ -1074,8 +1087,13 @@ const StatutoryCertificates = () => {
                       <FiMail className="text-green-600 text-2xl" />
                     </div>
                     <p className="text-sm text-gray-700 font-medium">OTP Generated Successfully!</p>
-                    <p className="text-xs text-gray-500 mt-1">We've generated the OTP for</p>
-                    <p className="text-sm font-semibold text-[#2C3E2B] mt-1">{formData.email}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+  OTP sent successfully to
+</p>
+
+<p className="text-sm font-semibold text-[#2C3E2B] mt-1">
+  {formData.phoneNumber}
+</p>
                     
                     {generatedOtp && (
                       <div className="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">

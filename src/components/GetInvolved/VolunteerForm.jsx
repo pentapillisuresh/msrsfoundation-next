@@ -8,7 +8,7 @@ import {
   FiUsers, FiClock, FiHeart, FiAward, FiCheckCircle, FiSend, 
   FiUser, FiBriefcase, FiBookOpen, FiTrendingUp, FiArrowRight, 
   FiStar, FiThumbsUp, FiSmile, FiTarget, FiCalendar, FiMapPin,
-  FiPlus, FiX, FiEdit2, FiAlertCircle
+  FiPlus, FiX, FiEdit2, FiAlertCircle, FiXCircle
 } from 'react-icons/fi';
 import { FaHandsHelping, FaQuoteLeft, FaChalkboardTeacher, FaFemale, FaTree } from 'react-icons/fa';
 import AOS from 'aos';
@@ -57,6 +57,7 @@ const VolunteerForm = () => {
     startDate: '',
     endDate: ''
   });
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const educationQualifications = [
     { value: "No Formal Education", label: "No Formal Education" },
@@ -298,11 +299,24 @@ const VolunteerForm = () => {
       const response = await ApiService.post('/volunteers', volunteerData);
       
       console.log('API Response:', response);
+      const smsMessage = `Dear ${formData.name}, your volunteer application has been received and is under review. We will notify you after verification. MAHA SHREE RUDRA SAMSTHANAM FOUNDATION | www.msrsfoundation.org`;
+
+      try {
+        fetch(
+          `https://pgapi.smartping.ai/fe/api/v1/send?username=Rudrasamsthanam.trans&password=TG6QI&unicode=false&from=MSRSFD&to=${formData.phoneNumber}&text=${encodeURIComponent(smsMessage)}&dltContentId=1707178125731984371`,
+          {
+            mode: "no-cors"
+          }
+        ).catch(() => {});
+      } catch (e) {
+        console.log("SMS request sent");
+      }
       
-      // Success handling
+      // Success handling - Show premium popup instead of inline message
       setIsSubmitting(false);
       setSubmitSuccess(true);
       setSubmitError('');
+      setShowSuccessPopup(true); // Show the premium success popup
       
       // Reset form
       setFormData({
@@ -331,10 +345,12 @@ const VolunteerForm = () => {
       setShowCustomAreaInput(false);
       setDateErrors({ startDate: '', endDate: '' });
       
-      // Hide success message after 5 seconds
-      setTimeout(() => setSubmitSuccess(false), 5000);
+      // Auto-close popup after 6 seconds
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+      }, 6000);
       
-      // Scroll to top to show success message
+      // Scroll to top to show the dimmed background effect
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
     } catch (error) {
@@ -342,6 +358,11 @@ const VolunteerForm = () => {
       setIsSubmitting(false);
       setSubmitError(error.message || 'Failed to submit application. Please try again.');
     }
+  };
+
+  // Close popup manually
+  const closeSuccessPopup = () => {
+    setShowSuccessPopup(false);
   };
 
   return (
@@ -435,7 +456,299 @@ const VolunteerForm = () => {
             transform: translateY(0);
           }
         }
+
+        /* Premium Popup Styles */
+        .popup-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(8px);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          animation: fadeIn 0.3s ease;
+        }
+
+        .popup-overlay.closing {
+          animation: fadeOut 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+
+        .popup-content {
+          background: linear-gradient(145deg, #ffffff, #f8faf7);
+          border-radius: 20px;
+          max-width: 520px;
+          width: 92%;
+          padding: 40px 35px 35px;
+          position: relative;
+          box-shadow: 0 30px 60px rgba(44, 62, 43, 0.3), 0 0 0 1px rgba(102, 122, 98, 0.1);
+          animation: popupSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transform-origin: center;
+        }
+
+        @keyframes popupSlideUp {
+          from { 
+            opacity: 0;
+            transform: scale(0.9) translateY(30px);
+          }
+          to { 
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+
+        .popup-close-btn {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: none;
+          background: #f0f2ee;
+          color: #4A5C46;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .popup-close-btn:hover {
+          background: #e5e8e2;
+          transform: rotate(90deg);
+        }
+
+        .popup-icon-wrapper {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #667A62, #4A5C46);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 20px;
+          box-shadow: 0 10px 30px rgba(102, 122, 98, 0.3);
+        }
+
+        .popup-icon-wrapper svg {
+          font-size: 40px;
+          color: white;
+        }
+
+        .popup-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 28px;
+          font-weight: 700;
+          color: #2C3E2B;
+          text-align: center;
+          margin-bottom: 8px;
+        }
+
+        .popup-subtitle {
+          font-family: 'Mulish', sans-serif;
+          color: #667A62;
+          text-align: center;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          margin-bottom: 15px;
+        }
+
+        .popup-divider {
+          width: 60px;
+          height: 3px;
+          background: linear-gradient(90deg, #667A62, #A8B8A5);
+          margin: 0 auto 20px;
+          border-radius: 2px;
+        }
+
+        .popup-message {
+          font-family: 'Mulish', sans-serif;
+          color: #4A5C46;
+          text-align: center;
+          font-size: 15px;
+          line-height: 1.7;
+          margin-bottom: 10px;
+        }
+
+        .popup-message strong {
+          color: #2C3E2B;
+          font-weight: 700;
+        }
+
+        .popup-timing {
+          font-family: 'Mulish', sans-serif;
+          background: #f0f4ee;
+          border-radius: 12px;
+          padding: 12px 16px;
+          margin: 18px 0 22px;
+          text-align: center;
+          font-size: 13px;
+          color: #4A5C46;
+          border: 1px solid #dce5da;
+        }
+
+        .popup-timing span {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-weight: 600;
+          color: #667A62;
+        }
+
+        .popup-button {
+          width: 100%;
+          padding: 14px;
+          background: linear-gradient(135deg, #667A62, #4A5C46);
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-family: 'Mulish', sans-serif;
+          font-weight: 700;
+          font-size: 16px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .popup-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba(102, 122, 98, 0.3);
+        }
+
+        .popup-button:active {
+          transform: scale(0.98);
+        }
+
+        .popup-confetti {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          overflow: hidden;
+        }
+
+        .confetti-piece {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          border-radius: 2px;
+          animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+          0% {
+            opacity: 1;
+            transform: translateY(-10px) rotate(0deg) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(400px) rotate(720deg) scale(0.5);
+          }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+          .popup-content {
+            padding: 30px 20px 25px;
+          }
+          .popup-title {
+            font-size: 24px;
+          }
+          .popup-icon-wrapper {
+            width: 60px;
+            height: 60px;
+          }
+          .popup-icon-wrapper svg {
+            font-size: 30px;
+          }
+        }
       `}</style>
+
+      {/* --- SUCCESS POPUP (PREMIUM) --- */}
+      {showSuccessPopup && (
+        <div className="popup-overlay" onClick={closeSuccessPopup}>
+          <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+            {/* Confetti pieces */}
+            <div className="popup-confetti">
+              {[...Array(20)].map((_, i) => {
+                const colors = ['#667A62', '#A8B8A5', '#FFD700', '#E8F0E6', '#4A5C46', '#8FA68B'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const randomLeft = Math.random() * 100;
+                const randomDelay = Math.random() * 2;
+                const randomDuration = 1.5 + Math.random() * 1.5;
+                return (
+                  <div 
+                    key={i}
+                    className="confetti-piece"
+                    style={{
+                      left: `${randomLeft}%`,
+                      background: randomColor,
+                      animationDuration: `${randomDuration}s`,
+                      animationDelay: `${randomDelay}s`,
+                      width: `${4 + Math.random() * 6}px`,
+                      height: `${4 + Math.random() * 6}px`,
+                      transform: `rotate(${Math.random() * 360}deg)`
+                    }}
+                  />
+                );
+              })}
+            </div>
+
+            <button className="popup-close-btn" onClick={closeSuccessPopup}>
+              <FiXCircle size={18} />
+            </button>
+
+            <div className="popup-icon-wrapper">
+              <FiCheckCircle />
+            </div>
+
+            <h2 className="popup-title">Application Submitted!</h2>
+            <p className="popup-subtitle">Thank You for Your Interest</p>
+            <div className="popup-divider"></div>
+
+            <p className="popup-message">
+              Dear <strong>{formData.name || 'Volunteer'}</strong>, your application has been received successfully!
+            </p>
+
+            <div className="popup-timing">
+              <span>⏳ Review Time: 24-48 hours</span>
+              <br />
+              <span style={{ fontSize: '12px', color: '#667A62' }}>
+                We'll contact you soon via email and phone
+              </span>
+            </div>
+
+            <p className="popup-message" style={{ fontSize: '13px', color: '#667A62' }}>
+              <strong>📱 SMS Confirmation</strong> sent to your phone number
+            </p>
+
+            <button className="popup-button" onClick={closeSuccessPopup}>
+              <FiThumbsUp size={18} /> Great! I'll Wait
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* --- HERO SECTION --- */}
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
@@ -564,16 +877,6 @@ const VolunteerForm = () => {
                   <p className="text-[#4A5C46] text-xs mt-1">Fill out the form to begin your journey</p>
                   <div className="w-12 h-0.5 bg-[#667A62] mx-auto mt-3"></div>
                 </div>
-
-                {submitSuccess && (
-                  <div className="success-message mb-4 p-3 bg-green-50 border-l-4 border-green-500 flex items-center gap-2">
-                    <FiCheckCircle className="text-green-500 text-base" />
-                    <div>
-                      <p className="text-green-800 font-semibold text-xs">Application Submitted Successfully!</p>
-                      <p className="text-green-600 text-xs">We'll contact you within 48 hours.</p>
-                    </div>
-                  </div>
-                )}
 
                 {submitError && (
                   <div className="error-message mb-4 p-3 bg-red-50 border-l-4 border-red-500 flex items-center gap-2">

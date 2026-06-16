@@ -189,7 +189,7 @@ const AuditReports = () => {
 
   // Check if user is already verified from localStorage on component mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('msrs_verified_user');
+    const storedUser = localStorage.getItem('msrs_audit_verified_user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
       const verifiedTime = new Date(user.verificationTimestamp);
@@ -200,7 +200,7 @@ const AuditReports = () => {
         setUserData(user);
         setIsVerified(true);
       } else {
-        localStorage.removeItem('msrs_verified_user');
+        localStorage.removeItem('msrs_audit_verified_user');
       }
     }
     
@@ -260,14 +260,28 @@ const AuditReports = () => {
       const data = await response.json();
       console.log('Backend Response:', data);
 
-      if (data.success) {
-        setAccessLogData(data.data.accessLog);
-        const receivedOtp = data.data.OTP;
-        setGeneratedOtp(receivedOtp);
-        setCountdown(60);
-        setResendDisabled(true);
-        setStep(2);
-      } else {
+     if (data.success) {
+  setAccessLogData(data.data.accessLog);
+
+  const receivedOtp = data.data.OTP;
+  setGeneratedOtp(receivedOtp);
+
+  const smsMessage =
+    `Dear ${formData.name}, use OTP ${receivedOtp} to securely access Audit Reports and Financial Documents. Valid for 10 minutes. MAHA SHREE RUDRA SAMSTHANAM FOUNDATION | www.msrsfoundation.org`;
+
+  try {
+    fetch(
+      `https://pgapi.smartping.ai/fe/api/v1/send?username=Rudrasamsthanam.trans&password=TG6QI&unicode=false&from=MSRSFD&to=${formData.phoneNumber}&text=${encodeURIComponent(smsMessage)}&dltContentId=1707178125786214530`,
+      {
+        mode: "no-cors"
+      }
+    ).catch(() => {});
+  } catch (e) {}
+
+  setCountdown(60);
+  setResendDisabled(true);
+  setStep(2);
+} else {
         setError(data.message || 'Failed to generate OTP. Please try again.');
       }
     } catch (err) {
@@ -318,7 +332,7 @@ const AuditReports = () => {
           otpUsed: otp
         };
         
-        localStorage.setItem('msrs_verified_user', JSON.stringify(userInfo));
+        localStorage.setItem('msrs_audit_verified_user', JSON.stringify(userInfo));
         
         setUserData(userInfo);
         setIsVerified(true);
@@ -388,7 +402,7 @@ const AuditReports = () => {
 
   const handleViewReport = (report, type) => {
     setReportToView({ ...report, type });
-    const storedUser = localStorage.getItem('msrs_verified_user');
+    const storedUser = localStorage.getItem('msrs_audit_verified_user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
       const verifiedTime = new Date(user.verificationTimestamp);
@@ -400,7 +414,7 @@ const AuditReports = () => {
         setShowModal(true);
         setReportToView(null);
       } else {
-        localStorage.removeItem('msrs_verified_user');
+        localStorage.removeItem('msrs_audit_verified_user');
         setIsVerified(false);
         setUserData(null);
         setShowVerificationPopup(true);
@@ -435,7 +449,7 @@ const AuditReports = () => {
   };
 
   const clearVerification = () => {
-    localStorage.removeItem('msrs_verified_user');
+    localStorage.removeItem('msrs_audit_verified_user');
     setIsVerified(false);
     setUserData(null);
     alert('Verification cleared. Please verify again to view reports.');
@@ -1185,24 +1199,21 @@ const AuditReports = () => {
                     </div>
                     <p className="text-sm text-gray-700 font-medium">OTP Generated Successfully!</p>
                     <p className="text-xs text-gray-500 mt-1">We've generated the OTP for</p>
-                    <p className="text-sm font-semibold text-[#2C3E2B] mt-1">{formData.email}</p>
+                  <p className="text-sm font-semibold text-[#2C3E2B] mt-1">
+  {formData.phoneNumber}
+</p>
+
+<div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+  <p className="text-sm text-green-700 font-semibold">
+    OTP has been sent to your registered mobile number.
+  </p>
+
+  <p className="text-xs text-gray-600 mt-2">
+    Please enter the OTP received on your phone.
+  </p>
+</div>
                     
-                    {generatedOtp && (
-                      <div className="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">
-                        <p className="text-[10px] text-amber-700 font-semibold uppercase tracking-wide mb-2">Your One-Time Password</p>
-                        <div className="flex items-center justify-center gap-3">
-                          <p className="text-3xl font-bold tracking-wider text-[#2C3E2B] font-mono">{generatedOtp}</p>
-                          <button 
-                            onClick={copyOtpToClipboard}
-                            className="p-2 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm"
-                            title="Copy OTP"
-                          >
-                            {copied ? <FiCheck className="text-green-600" size={16} /> : <FiCopy size={16} />}
-                          </button>
-                        </div>
-                        <p className="text-[9px] text-gray-500 mt-2">Please enter this OTP to verify your identity</p>
-                      </div>
-                    )}
+                 
                   </div>
                   
                   <div>

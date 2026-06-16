@@ -275,13 +275,23 @@ const ScheduleMeeting = () => {
         console.log('Submitting meeting data:', meetingData);
         
         // Make API call to meetings endpoint
-        const response = await ApiService.post('/meetings', meetingData);
-        
-        console.log('API Response:', response);
-        
-        // Success handling
-        setIsSubmitting(false);
-        setShowSuccessPopup(true);
+const response = await ApiService.post('/meetings', meetingData);
+
+const smsMessage = `Dear ${formData.companyName}, your CSR Meeting registration has been received. Meeting details will be shared via email upon approval. MAHA SHREE RUDRA SAMSTHANAM FOUNDATION | www.msrsfoundation.org`;
+
+try {
+  fetch(
+    `https://pgapi.smartping.ai/fe/api/v1/send?username=Rudrasamsthanam.trans&password=TG6QI&unicode=false&from=MSRSFD&to=${formData.mobileNumber}&text=${encodeURIComponent(smsMessage)}&dltContentId=1707178125763020035`,
+    {
+      mode: "no-cors"
+    }
+  ).catch(() => {});
+} catch (e) {
+  console.log("SMS request sent");
+}
+
+setIsSubmitting(false);
+setShowSuccessPopup(true);
         setSubmitError('');
         
         // Reset form
