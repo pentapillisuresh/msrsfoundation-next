@@ -3,24 +3,21 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
-  FiFacebook, 
-  FiInstagram, 
-  FiLinkedin, 
-  FiHeart, 
-  FiMail, 
-  FiPhone, 
-  FiArrowRight,
-  FiExternalLink,
-  FiShield,
-  FiCheckCircle,
-  FiMapPin
-} from 'react-icons/fi';
+  FaFacebook, 
+  FaInstagram, 
+  FaYoutube,
+  FaHeart, 
+  FaPhone, 
+  FaArrowRight,
+  FaMapMarkerAlt,
+  FaCheckCircle
+} from 'react-icons/fa';
+import { FiMail } from 'react-icons/fi';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const router = useRouter();
 
-  // Use your local image
   const upiQrCodeUrl = "/images/qr1.png";
 
   const handleDonateClick = () => {
@@ -36,7 +33,7 @@ const Footer = () => {
         </span>
       </div>
       
-      <div className="container mx-auto px-6 lg:px-20 relative z-10">
+      <div className="container-fluid mx-auto px-6 lg:px-20 relative z-10">
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-16">
           
@@ -53,9 +50,9 @@ const Footer = () => {
             </p>
             <div className="flex gap-3">
               {[
-                { Icon: FiFacebook, href: "https://facebook.com" },
-                { Icon: FiInstagram, href: "https://instagram.com" },
-                { Icon: FiLinkedin, href: "https://linkedin.com" }
+                { Icon: FaYoutube, href: "https://www.youtube.com/channel/UCu2S90h_3uhxApa1p0YtEqg" },
+                { Icon: FaFacebook, href: "https://www.facebook.com/srinivas.sai.1426/" },
+                { Icon: FaInstagram, href: "https://www.instagram.com/dir.srinivasasai.k/" }
               ].map((social, idx) => (
                 <a 
                   key={idx} 
@@ -73,40 +70,40 @@ const Footer = () => {
           {/* Column 2: Navigation */}
           <div>
             <h4 className="text-white/80 text-xs font-bold uppercase tracking-[0.2em] mb-7">Navigation</h4>
-            <ul className="grid grid-cols-1 gap-3">
+            <ul className="grid grid-cols-1 gap-4">
               <li>
                 <Link href="/" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group">
-                  <FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
+                  <FaArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
                   Home
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group">
-                  <FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
+                  <FaArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
                   About Us
                 </Link>
               </li>
               <li>
                 <Link href="/csr-projects" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group">
-                  <FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
+                  <FaArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
                   CSR Projects
                 </Link>
               </li>
               <li>
                 <Link href="/events" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group">
-                  <FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
+                  <FaArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
                   Events
                 </Link>
               </li>
               <li>
                 <Link href="/digital-media" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group">
-                  <FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
+                  <FaArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
                   Digital Media
                 </Link>
               </li>
               <li>
                 <Link href="/knowledge-hub" className="text-sm text-white/80 hover:text-white transition-all flex items-center gap-2 group">
-                  <FiArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
+                  <FaArrowRight className="opacity-0 group-hover:opacity-100 -ml-4 group-hover:ml-0 transition-all text-xs" /> 
                   Knowledge Hub
                 </Link>
               </li>
@@ -140,21 +137,21 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4: Contact */}
+          {/* Column 4: Contact - USING FiMail */}
           <div>
             <h4 className="text-white/80 text-xs font-bold uppercase tracking-[0.2em] mb-7">Contact</h4>
             <div className="space-y-4 mb-6">
               <div className="flex items-center gap-3 text-sm text-white/80">
-                <FiPhone className="text-white" size={14} /> 
-                <span>+91 XXXXX XXXXX</span>
+                <FaPhone className="text-white flex-shrink-0" size={14} /> 
+                <span>+91 79814 10226</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-white/80">
-                <FiMail className="text-white" size={14} /> 
-                <span>info@msrsfoundation.org</span>
+                <FiMail className="text-white flex-shrink-0" size={14} /> 
+                <span>msrsfoundation2025@gmail.com</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-white/80">
-                <FiMapPin className="text-white" size={14} /> 
-                <span>Hyderabad, Telangana, India</span>
+                <FaMapMarkerAlt className="text-white flex-shrink-0" size={14} /> 
+                <span>Kothavalasa, Visakhapatnam, Andhra Pradesh, India</span>
               </div>
             </div>
           </div>
@@ -162,7 +159,6 @@ const Footer = () => {
           {/* Column 5: QR Code & Donate */}
           <div>
             <div className="bg-white/10 backdrop-blur-sm p-5 rounded-2xl border border-white/20 shadow-lg">
-              {/* QR Code */}
               <div className="flex justify-center mb-4">
                 <img 
                   src={upiQrCodeUrl} 
@@ -174,8 +170,6 @@ const Footer = () => {
                   }}
                 />
               </div>
-              
-              {/* Scan Text */}
               <p className="text-center text-[10px] text-white/70 font-semibold tracking-wider mb-3">
                 SCAN & PAY VIA UPI
               </p>
@@ -185,14 +179,13 @@ const Footer = () => {
                 onClick={handleDonateClick}
                 className="w-full bg-white hover:bg-white/90 text-[#2C3E2B] font-bold py-3 mt-2 px-4 rounded-xl transition-all duration-300 text-sm tracking-widest flex items-center justify-center gap-2 shadow-lg"
               >
-                <FiHeart size={16} />
+                <FaHeart size={16} />
                 DONATE NOW
               </button>
               
-              {/* 80G Tax Exemption Text */}
               <div className="mt-3 text-center">
                 <div className="flex items-center justify-center gap-1">
-                  <FiCheckCircle size={10} className="text-white/80" />
+                  <FaCheckCircle size={10} className="text-white/80" />
                   <p className="text-[8px] text-white/80 font-medium tracking-wide">
                     80G Tax Exemption Available
                   </p>

@@ -268,7 +268,7 @@ const CorporatePartnership = () => {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=2070" 
+            src="/images/banner2.png" 
             className="w-full h-full object-cover animate-zoom" 
             alt="Corporate Partnership Hero"
           />

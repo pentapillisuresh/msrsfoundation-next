@@ -272,7 +272,7 @@ const DigitalMedia = () => {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=2070"
+            src="/images/banner13.png"
             className="w-full h-full object-cover animate-zoom"
             alt="Digital Media"
           />

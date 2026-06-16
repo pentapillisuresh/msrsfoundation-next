@@ -562,7 +562,7 @@ setStep(2);
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070" 
+            src="./images/banner14.png" 
             className="w-full h-full object-cover animate-zoom" 
             alt="Statutory Certificates Hero"
           />
@@ -591,57 +591,7 @@ setStep(2);
         </div>
       </section>
 
-      {/* GOVERNMENT APPROVALS SECTION */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="text-center mb-12" data-aos="fade-up">
-            <span className="text-xs tracking-[5px] text-[#667A62] font-semibold mb-3 inline-block">
-              GOVERNMENT RECOGNITION
-            </span>
-            <div className="w-16 h-0.5 bg-[#667A62] mx-auto"></div>
-            <h2 className="font-serif text-3xl md:text-4xl text-[#2C3E2B] mt-4 mb-3">
-              Government of India Approvals
-            </h2>
-            <p className="text-[#4A5C46] text-sm max-w-2xl mx-auto">
-              Our foundation is registered and approved by various government bodies for transparency and compliance
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {governmentApprovals.map((approval, index) => (
-              <div 
-                key={index} 
-                className="approval-card bg-white p-5"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#EAF6E3] flex items-center justify-center">
-                      <FaShieldAlt className="text-[#667A62] text-lg" />
-                    </div>
-                    <h3 className="font-serif font-bold text-[#2C3E2B] text-base">{approval.title}</h3>
-                  </div>
-                  <div className="status-badge">
-                    <span className={`inline-block px-2 py-0.5 text-[9px] font-semibold ${
-                      approval.status === 'Approved' || approval.status === 'Active' || approval.status === 'Registered' || approval.status === 'Certified'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
-                    }`}>
-                      {approval.status}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[#4A5C46] text-xs mb-3">{approval.description}</p>
-                <div className="flex justify-between text-[9px] text-gray-400 mt-3 pt-2 border-t border-[#EAF6E3]">
-                  <span>📅 Since {approval.date}</span>
-                  <span>📄 Ref: {approval.ref}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
       {/* ALL CERTIFICATES SECTION - PURELY FROM BACKEND API */}
       <section className="py-24 bg-[#F7F9F5]">

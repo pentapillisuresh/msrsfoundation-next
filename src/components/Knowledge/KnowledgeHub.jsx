@@ -165,7 +165,7 @@ const KnowledgeHub = () => {
 
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2070"
+            src="./images/banner11.png"
             className="w-full h-full object-cover"
             alt="Knowledge Hub"
           />

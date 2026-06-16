@@ -138,7 +138,7 @@ const EventsInitiatives = () => {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2070" 
+            src="./images/banner10.png" 
             className="w-full h-full object-cover animate-zoom" 
             alt="Events Hero"
           />

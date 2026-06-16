@@ -155,7 +155,7 @@ const GetInTouch = () => {
       title: 'Visit Our Office',
       details: [
         'MSRS Foundation',
-        'Chinnamushidivada',
+        'kothavalasa',
         'Visakhapatnam, Andhra Pradesh - 530045'
       ],
     },
@@ -163,8 +163,8 @@ const GetInTouch = () => {
       icon: <FiPhone />,
       title: 'Call Us',
       details: [
-        '+91 XXXXX XXXXX',
-        '+91 XXXXX XXXXX (For CSR)'
+        '+91 7981410226',
+      
       ],
     },
     {
@@ -172,7 +172,7 @@ const GetInTouch = () => {
       title: 'Email Us',
       details: [
         'msrsfoundation2025@gmail.com',
-        'csr@msrsfoundation.org'
+       
       ],
     },
     {
@@ -239,7 +239,7 @@ const GetInTouch = () => {
         <div className="absolute inset-0 z-0">
 
           <img
-            src="/images/contact.avif"
+            src="/images/contact.png"
             className="w-full h-full object-cover"
             alt="Contact Hero"
           />

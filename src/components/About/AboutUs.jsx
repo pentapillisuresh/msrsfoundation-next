@@ -124,7 +124,7 @@ const AboutUs = () => {
             <div className="lg:col-span-5" data-aos="fade-right">
               <div className="stagger-border">
                 <img 
-                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069" 
+                  src="images/about4.avif" 
                   className="w-full h-[450px] object-cover rounded-sm grayscale hover:grayscale-0 transition-all duration-700" 
                   alt="Organization"
                 />
