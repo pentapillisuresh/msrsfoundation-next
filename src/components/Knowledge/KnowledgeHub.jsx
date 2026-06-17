@@ -330,7 +330,7 @@ const KnowledgeHub = () => {
                     <button
                       onClick={() =>
                         window.open(
-                          `http://localhost:3000${item.file}`,
+                          `https://service.msrsfoundation.org/${item.file}`,
                           "_blank"
                         )
                       }
@@ -341,7 +341,7 @@ const KnowledgeHub = () => {
                     </button>
 
                     <a
-                      href={`http://localhost:3000${item.file}`}
+                      href={`https://service.msrsfoundation.org/${item.file}`}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-1 text-[#667A62] font-semibold text-xs"

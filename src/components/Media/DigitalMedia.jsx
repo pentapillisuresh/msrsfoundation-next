@@ -55,7 +55,7 @@ import ApiService from "@/services/ApiService";
 
 const DigitalMedia = () => {
 
-  const BACKEND_URL = "http://localhost:3000";
+  const BACKEND_URL = "https://service.msrsfoundation.org/";
 
   const [activeMedia, setActiveMedia] = useState("videos");
   const [activeCategory, setActiveCategory] = useState("all");

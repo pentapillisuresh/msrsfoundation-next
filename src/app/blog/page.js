@@ -146,7 +146,7 @@ export default function BlogListingPage() {
                   <div className="relative h-56 overflow-hidden">
                     {blog.image ? (
                       <img 
-                        src={`http://localhost:3000${blog.image}`} 
+                        src={`https://service.msrsfoundation.org/${blog.image}`} 
                         alt={blog.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => {

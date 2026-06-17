@@ -236,7 +236,7 @@ const EventsInitiatives = () => {
                       {/* Image Thumbnail */}
                       <div className="w-40 md:w-52 h-full flex-shrink-0 relative">
                         <img 
-                          src={event.image ? `http://localhost:3000${event.image}` : "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80"} 
+                          src={event.image ? `https://service.msrsfoundation.org/${event.image}` : "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80"} 
                           alt={event.eventName} 
                           className="w-full h-full object-cover" 
                         />
@@ -409,7 +409,7 @@ const EventsInitiatives = () => {
           >
             <div className="h-48 relative">
               <img 
-                src={selectedEvent.image ? `http://localhost:3000${selectedEvent.image}` : "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80"} 
+                src={selectedEvent.image ? `https://service.msrsfoundation.org/${selectedEvent.image}` : "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80"} 
                 className="w-full h-full object-cover" 
                 alt={selectedEvent.eventName} 
               />
