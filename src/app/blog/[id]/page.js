@@ -173,7 +173,7 @@ export default function BlogDetailsPage({ params }) {
         {blog.image && (
           <div className="mb-12">
             <img 
-              src={`http://localhost:3000${blog.image}`} 
+              src={`https://service.msrsfoundation.org/${blog.image}`} 
               alt={blog.title}
               className="w-full h-auto rounded-2xl shadow-lg"
             />

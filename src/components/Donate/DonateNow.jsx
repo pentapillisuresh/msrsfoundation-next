@@ -28,7 +28,7 @@ const DonateNow = () => {
   }, []);
 
   // --- Base URL Configuration ---
-  const BASE_URL = 'http://localhost:3000/api';
+  const BASE_URL = 'https://service.msrsfoundation.org//api';
 
   // --- Step Management ---
   const [currentStep, setCurrentStep] = useState(1);

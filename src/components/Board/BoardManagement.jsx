@@ -81,8 +81,8 @@ const BoardManagement = () => {
   const getImageUrl = (image) => {
     if (!image) return '/images/default-profile.png';
     if (image.startsWith('http')) return image;
-    if (image.startsWith('/uploads')) return `http://localhost:3000${image}`;
-    return `http://localhost:3000/uploads/images/${image}`;
+    if (image.startsWith('/uploads')) return `https://service.msrsfoundation.org/${image}`;
+    return `https://service.msrsfoundation.org//uploads/images/${image}`;
   };
 
   // Filter out founder from board members

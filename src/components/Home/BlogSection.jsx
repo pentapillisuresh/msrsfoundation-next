@@ -82,7 +82,7 @@ const BlogSection = () => {
               <div className="relative h-56 overflow-hidden bg-gray-100">
                 {blog.image ? (
                   <img 
-                    src={`http://localhost:3000${blog.image}`} 
+                    src={`https://service.msrsfoundation.org/${blog.image}`} 
                     alt={blog.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     onError={(e) => {

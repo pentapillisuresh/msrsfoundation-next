@@ -119,7 +119,7 @@ const EventsInitiatives = () => {
                   <div className="relative flex-shrink-0">
                     <div className="w-full md:w-56 h-36 rounded-[30px] overflow-hidden">
                       <img
-                        src={event.image ? `http://localhost:3000${event.image}` : "https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=800"}
+                        src={event.image ? `https://service.msrsfoundation.org/${event.image}` : "https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=800"}
                         alt={event.eventName || event.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         onError={(e) => {

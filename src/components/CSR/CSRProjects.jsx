@@ -16,7 +16,7 @@ import ApiService from "@/services/ApiService";
 const CSRProjects = () => {
 
   const BACKEND_URL =
-    "http://localhost:3000";
+    "https://service.msrsfoundation.org/";
 
   const [activeCategory, setActiveCategory] =
     useState("All");

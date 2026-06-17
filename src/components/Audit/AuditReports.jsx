@@ -82,7 +82,7 @@ const AuditReports = () => {
     
     try {
       // Fetch documents with type 'Audit Report' or similar
-      const response = await fetch('http://localhost:3000/api/documents', {
+      const response = await fetch('https://service.msrsfoundation.org//api/documents', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -250,7 +250,7 @@ const AuditReports = () => {
 
       console.log('Sending request to backend:', requestData);
 
-      const response = await fetch('http://localhost:3000/api/access-logs', {
+      const response = await fetch('https://service.msrsfoundation.org//api/access-logs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -311,7 +311,7 @@ const AuditReports = () => {
 
       console.log('Verifying OTP:', verificationData);
 
-      const response = await fetch('http://localhost:3000/api/access-logs/verify-otp', {
+      const response = await fetch('https://service.msrsfoundation.org//api/access-logs/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -458,7 +458,7 @@ const AuditReports = () => {
 
   const getDocumentUrl = (documentPath) => {
     if (!documentPath) return null;
-    return `http://localhost:3000${documentPath}`;
+    return `https://service.msrsfoundation.org/${documentPath}`;
   };
 
   // Get current reports based on active tab
