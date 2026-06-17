@@ -243,11 +243,11 @@ const StatutoryCertificates = () => {
 setGeneratedOtp(receivedOtp);
 
 const smsMessage =
-  `Dear ${formData.name}, use OTP ${receivedOtp} to securely access Statutory Certificates and Legal Documents. Valid for 10 minutes. MAHA SHREE RUDRA SAMSTHANAM FOUNDATION | www.msrsfoundation.org`;
+  `Dear ${formData.name}, your OTP is ${receivedOtp} to access the registration documents (MSME, MOA, etc.) of MAHA SHREE RUDRA SAMSTHANAM FOUNDATION. This OTP is valid for 10 minutes. https://www.msrsfoundation.org`;
 
 try {
-  fetch(
-    `https://pgapi.smartping.ai/fe/api/v1/send?username=Rudrasamsthanam.trans&password=TG6QI&unicode=false&from=MSRSFD&to=${formData.phoneNumber}&text=${encodeURIComponent(smsMessage)}&dltContentId=YOUR_DLT_ID`,
+fetch(
+  `https://pgapi.smartping.ai/fe/api/v1/send?username=Rudrasamsthanam.trans&password=TG6QI&unicode=false&from=MSRSFD&to=${formData.phoneNumber}&text=${encodeURIComponent(smsMessage)}&dltContentId=1707178169526225901`,
     {
       mode: "no-cors"
     }
@@ -1045,22 +1045,7 @@ setStep(2);
   {formData.phoneNumber}
 </p>
                     
-                    {generatedOtp && (
-                      <div className="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">
-                        <p className="text-[10px] text-amber-700 font-semibold uppercase tracking-wide mb-2">Your One-Time Password</p>
-                        <div className="flex items-center justify-center gap-3">
-                          <p className="text-3xl font-bold tracking-wider text-[#2C3E2B] font-mono">{generatedOtp}</p>
-                          <button 
-                            onClick={copyOtpToClipboard}
-                            className="p-2 bg-white rounded-lg hover:bg-gray-50 transition shadow-sm"
-                            title="Copy OTP"
-                          >
-                            {copied ? <FiCheck className="text-green-600" size={16} /> : <FiCopy size={16} />}
-                          </button>
-                        </div>
-                        <p className="text-[9px] text-gray-500 mt-2">Please enter this OTP to verify your identity</p>
-                      </div>
-                    )}
+                   
                   </div>
                   
                   <div>

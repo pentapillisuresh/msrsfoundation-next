@@ -59,41 +59,70 @@ const VolunteerForm = () => {
   });
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
-  const educationQualifications = [
-    { value: "No Formal Education", label: "No Formal Education" },
-    { value: "Primary School (Class 1-5)", label: "Primary School (Class 1-5)" },
-    { value: "Middle School (Class 6-8)", label: "Middle School (Class 6-8)" },
-    { value: "High School (Class 9-10)", label: "High School (Class 9-10)" },
-    { value: "Higher Secondary (Class 11-12)", label: "Higher Secondary (Class 11-12)" },
-    { value: "Diploma / Polytechnic", label: "Diploma / Polytechnic" },
-    { value: "ITI / Vocational Training", label: "ITI / Vocational Training" },
-    { value: "Bachelor of Arts (BA)", label: "Bachelor of Arts (BA)" },
-    { value: "Bachelor of Science (BSc)", label: "Bachelor of Science (BSc)" },
-    { value: "Bachelor of Commerce (BCom)", label: "Bachelor of Commerce (BCom)" },
-    { value: "Bachelor of Engineering (BE/BTech)", label: "Bachelor of Engineering (BE/BTech)" },
-    { value: "Bachelor of Technology (BTech)", label: "Bachelor of Technology (BTech)" },
-    { value: "Bachelor of Education (BEd)", label: "Bachelor of Education (BEd)" },
-    { value: "Bachelor of Laws (LLB)", label: "Bachelor of Laws (LLB)" },
-    { value: "Bachelor of Pharmacy (BPharm)", label: "Bachelor of Pharmacy (BPharm)" },
-    { value: "Bachelor of Physiotherapy (BPT)", label: "Bachelor of Physiotherapy (BPT)" },
-    { value: "Bachelor of Architecture (BArch)", label: "Bachelor of Architecture (BArch)" },
-    { value: "Bachelor of Business Administration (BBA)", label: "Bachelor of Business Administration (BBA)" },
-    { value: "Bachelor of Computer Applications (BCA)", label: "Bachelor of Computer Applications (BCA)" },
-    { value: "Bachelor of Social Work (BSW)", label: "Bachelor of Social Work (BSW)" },
-    { value: "Master of Arts (MA)", label: "Master of Arts (MA)" },
-    { value: "Master of Science (MSc)", label: "Master of Science (MSc)" },
-    { value: "Master of Commerce (MCom)", label: "Master of Commerce (MCom)" },
-    { value: "Master of Engineering (ME/MTech)", label: "Master of Engineering (ME/MTech)" },
-    { value: "Master of Business Administration (MBA)", label: "Master of Business Administration (MBA)" },
-    { value: "Master of Computer Applications (MCA)", label: "Master of Computer Applications (MCA)" },
-    { value: "Master of Education (MEd)", label: "Master of Education (MEd)" },
-    { value: "Master of Laws (LLM)", label: "Master of Laws (LLM)" },
-    { value: "Master of Social Work (MSW)", label: "Master of Social Work (MSW)" },
-    { value: "Doctoral Degree (PhD)", label: "Doctoral Degree (PhD)" },
-    { value: "Post-Doctoral Fellowship", label: "Post-Doctoral Fellowship" },
-    { value: "Professional Certification", label: "Professional Certification" },
-    { value: "Other Qualification", label: "Other Qualification" }
-  ];
+  // Comprehensive education qualifications for volunteer form (no certifications)
+ const educationQualifications = [
+// Basic Education
+
+{ value: "10th Pass (SSC)", label: "10th Pass (SSC)" },
+{ value: "12th Pass (Intermediate)", label: "12th Pass (Intermediate)" },
+
+// Vocational
+{ value: "ITI", label: "ITI" },
+{ value: "Diploma", label: "Diploma" },
+{ value: "Polytechnic", label: "Polytechnic" },
+{ value: "Certificate Course", label: "Certificate Course" },
+
+// Undergraduate
+{ value: "BA", label: "Bachelor of Arts (BA)" },
+{ value: "BCom", label: "Bachelor of Commerce (BCom)" },
+{ value: "BSc", label: "Bachelor of Science (BSc)" },
+{ value: "BCA", label: "Bachelor of Computer Applications (BCA)" },
+{ value: "BBA", label: "Bachelor of Business Administration (BBA)" },
+{ value: "BE", label: "Bachelor of Engineering (BE)" },
+{ value: "BTech", label: "Bachelor of Technology (BTech)" },
+{ value: "BEd", label: "Bachelor of Education (BEd)" },
+{ value: "LLB", label: "Bachelor of Laws (LLB)" },
+{ value: "MBBS", label: "MBBS" },
+{ value: "BDS", label: "BDS" },
+{ value: "BPharm", label: "Bachelor of Pharmacy (BPharm)" },
+{ value: "BSc Nursing", label: "BSc Nursing" },
+{ value: "BAMS", label: "BAMS" },
+{ value: "BHMS", label: "BHMS" },
+
+// Postgraduate
+{ value: "MA", label: "Master of Arts (MA)" },
+{ value: "MCom", label: "Master of Commerce (MCom)" },
+{ value: "MSc", label: "Master of Science (MSc)" },
+{ value: "MBA", label: "Master of Business Administration (MBA)" },
+{ value: "MCA", label: "Master of Computer Applications (MCA)" },
+{ value: "ME", label: "Master of Engineering (ME)" },
+{ value: "MTech", label: "Master of Technology (MTech)" },
+{ value: "MEd", label: "Master of Education (MEd)" },
+{ value: "LLM", label: "Master of Laws (LLM)" },
+{ value: "MD", label: "Doctor of Medicine (MD)" },
+{ value: "MS", label: "Master of Surgery (MS)" },
+{ value: "MPharm", label: "Master of Pharmacy (MPharm)" },
+
+// Research & Doctorate
+{ value: "PhD", label: "Doctor of Philosophy (PhD)" },
+{ value: "DSc", label: "Doctor of Science (DSc)" },
+{ value: "Post Doctorate", label: "Post Doctorate" },
+
+// Professional Qualifications
+{ value: "CA", label: "Chartered Accountant (CA)" },
+{ value: "CS", label: "Company Secretary (CS)" },
+{ value: "CMA", label: "Cost & Management Accountant (CMA)" },
+{ value: "ICWA", label: "ICWA" },
+
+// Government / Public Service
+{ value: "Civil Services", label: "Civil Services" },
+{ value: "Public Administration", label: "Public Administration" },
+{ value: "Political Science", label: "Political Science" },
+
+// Other
+{ value: "Other", label: "Other Qualification" }
+];
+
 
   // EXACT ENUM VALUES from your backend
   const areasList = [
@@ -904,28 +933,39 @@ const VolunteerForm = () => {
                         onChange={handleChange} 
                         value={formData.name} 
                       />
-                      <div className="grid grid-cols-2 gap-3">
-                        <input 
-                          type="date" 
-                          name="dob" 
-                          required
-                          className="form-input px-3 py-2 bg-gray-50 text-sm" 
-                          onChange={handleChange} 
-                          value={formData.dob} 
-                        />
-                        <select 
-                          name="gender" 
-                          className="form-input px-3 py-2 bg-gray-50 text-sm" 
-                          onChange={handleChange} 
-                          value={formData.gender}
-                          required
-                        >
-                          <option value="">Gender *</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
+<div className="grid grid-cols-2 gap-3">
+  <div>
+    <label className="block text-xs font-medium text-gray-700 mb-1">
+      Date of Birth *
+    </label>
+    <input
+      type="date"
+      name="dob"
+      required
+      className="form-input w-full px-3 py-2 bg-gray-50 text-sm"
+      onChange={handleChange}
+      value={formData.dob}
+    />
+  </div>
+
+  <div>
+    <label className="block text-xs font-medium text-gray-700 mb-1">
+      Gender *
+    </label>
+    <select
+      name="gender"
+      required
+      className="form-input w-full px-3 py-2 bg-gray-50 text-sm"
+      onChange={handleChange}
+      value={formData.gender}
+    >
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+</div>
                       <input 
                         type="tel" 
                         name="phoneNumber" 
@@ -1024,52 +1064,13 @@ const VolunteerForm = () => {
                         )}
                       </div>
 
-                      {/* Start Time */}
-                      <div>
-                        <label className="block text-xs font-medium text-[#4A5C46] mb-1">Start Time *</label>
-                        <input 
-                          type="time" 
-                          name="availableStartTime" 
-                          className="form-input w-full px-3 py-2 bg-gray-50 text-sm" 
-                          onChange={handleChange} 
-                          value={formData.availableStartTime}
-                          required
-                        />
-                      </div>
-
-                      {/* End Date */}
-                      <div>
-                        <label className="block text-xs font-medium text-[#4A5C46] mb-1">End Date *</label>
-                        <input 
-                          type="date" 
-                          name="availableEndDate" 
-                          min={formData.availableStartDate || getTodayDate()}
-                          className={`form-input w-full px-3 py-2 bg-gray-50 text-sm ${dateErrors.endDate ? 'border-red-500' : ''}`}
-                          onChange={handleChange} 
-                          value={formData.availableEndDate}
-                          required
-                        />
-                        {dateErrors.endDate && (
-                          <p className="text-red-500 text-xs mt-1">{dateErrors.endDate}</p>
-                        )}
-                      </div>
-
-                      {/* End Time */}
-                      <div>
-                        <label className="block text-xs font-medium text-[#4A5C46] mb-1">End Time *</label>
-                        <input 
-                          type="time" 
-                          name="availableEndTime" 
-                          className="form-input w-full px-3 py-2 bg-gray-50 text-sm" 
-                          onChange={handleChange} 
-                          value={formData.availableEndTime}
-                          required
-                        />
-                      </div>
+                      {/* Start Time - REMOVED */}
+                      {/* End Date - REMOVED */}
+                      {/* End Time - REMOVED */}
 
                       <p className="text-xs text-[#667A62] italic mt-1">
                         <FiCalendar className="inline mr-1" size={10} />
-                        Please select your available date range and preferred time slots
+                        Please select your available start date
                       </p>
                     </div>
                   </div>
