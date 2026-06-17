@@ -311,6 +311,17 @@ const DigitalMedia = () => {
 
           {/* TABS */}
           <div className="flex justify-center gap-4 mb-12" data-aos="fade-up">
+             <button
+              onClick={() => setActiveMedia("photos")}
+              className={`group flex items-center gap-2 px-8 py-3 text-sm font-semibold transition-all duration-300 rounded-lg ${
+                activeMedia === "photos"
+                  ? "bg-[#667A62] text-white shadow-lg"
+                  : "bg-white text-[#2C3E2B] hover:bg-[#EAF6E3]"
+              }`}
+            >
+              <FiImage size={16} />
+              Photos ({allPhotos.length})
+            </button>
             <button
               onClick={() => setActiveMedia("videos")}
               className={`group flex items-center gap-2 px-8 py-3 text-sm font-semibold transition-all duration-300 rounded-lg ${
@@ -322,17 +333,7 @@ const DigitalMedia = () => {
               <FiFilm size={16} />
               Videos ({allVideos.length})
             </button>
-            <button
-              onClick={() => setActiveMedia("photos")}
-              className={`group flex items-center gap-2 px-8 py-3 text-sm font-semibold transition-all duration-300 rounded-lg ${
-                activeMedia === "photos"
-                  ? "bg-[#667A62] text-white shadow-lg"
-                  : "bg-white text-[#2C3E2B] hover:bg-[#EAF6E3]"
-              }`}
-            >
-              <FiImage size={16} />
-              Photos ({allPhotos.length})
-            </button>
+           
           </div>
 
           {/* VIDEOS SECTION */}

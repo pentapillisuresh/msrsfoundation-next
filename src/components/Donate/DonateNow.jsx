@@ -30,21 +30,12 @@ const DonateNow = () => {
   // --- Base URL Configuration ---
   const BASE_URL = 'https://service.msrsfoundation.org//api';
 
-  // --- Step Management ---
-  const [currentStep, setCurrentStep] = useState(1);
-  const [completedSteps, setCompletedSteps] = useState({
-    step1: false,
-    step2: false,
-    step3: false,
-    step4: false
-  });
-
   // --- State Management ---
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [selectedSubCategory, setSelectedSubCategory] = useState("Sponsor a Child's Education");
   const [citizenship, setCitizenship] = useState('Indian Citizen');
   const [donationType, setDonationType] = useState('Once');
-  const [amount, setAmount] = useState(5000);
+  const [amount, setAmount] = useState(1000);
   const [customAmount, setCustomAmount] = useState('');
   const [request80G, setRequest80G] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -52,6 +43,7 @@ const DonateNow = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState('');
+  const [showDonationForm, setShowDonationForm] = useState(true);
   
   // Captcha State
   const [captchaInput, setCaptchaInput] = useState('');
@@ -120,18 +112,6 @@ const DonateNow = () => {
   useEffect(() => {
     generateCaptcha();
   }, []);
-
-  useEffect(() => {
-    if (selectedCategory && selectedSubCategory) {
-      setCompletedSteps(prev => ({ ...prev, step1: true }));
-    }
-    if ((amount > 0 || customAmount) && donationType && citizenship) {
-      setCompletedSteps(prev => ({ ...prev, step2: true }));
-    }
-    if (donorDetails.name && donorDetails.email) {
-      setCompletedSteps(prev => ({ ...prev, step3: true }));
-    }
-  }, [selectedCategory, selectedSubCategory, amount, customAmount, donationType, citizenship, donorDetails.name, donorDetails.email]);
 
   const donationCategories = [
     { id: 1, title: "Food & Nutrition", icon: <FaAppleAlt />, impact: "₹1,000 feeds 50 people", subCategories: [
@@ -297,36 +277,6 @@ const DonateNow = () => {
     }
   };
 
-  const validateStep = () => {
-    if (currentStep === 1) {
-      return selectedCategory && selectedSubCategory;
-    }
-    if (currentStep === 2) {
-      return (amount > 0 || customAmount) && donationType && citizenship;
-    }
-    if (currentStep === 3) {
-      return donorDetails.name && donorDetails.email;
-    }
-    if (currentStep === 4) {
-      return agreeTerms && validateCaptcha();
-    }
-    return true;
-  };
-
-  const handleNext = () => {
-    if (validateStep()) {
-      setCurrentStep(currentStep + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      alert('Please complete all required fields in this step before proceeding.');
-    }
-  };
-
-  const handlePrevious = () => {
-    setCurrentStep(currentStep - 1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   // Initialize Razorpay payment
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -406,7 +356,6 @@ const DonateNow = () => {
   };
 
   const resetForm = () => {
-    setCurrentStep(1);
     setSelectedCategory(1);
     setSelectedSubCategory("Sponsor a Child's Education");
     setCitizenship('Indian Citizen');
@@ -500,13 +449,6 @@ const DonateNow = () => {
     setShowSuccessPopup(false);
     resetForm();
   };
-
-  const steps = [
-    { number: 1, title: 'Choose Cause', icon: <FaHandHoldingHeart /> },
-    { number: 2, title: 'Donation Details', icon: <FaRupeeSign /> },
-    { number: 3, title: 'Personal Info', icon: <FiUser /> },
-    { number: 4, title: 'Confirm & Pay', icon: <FiShield /> }
-  ];
 
   return (
     <div className="bg-[#FCFDFB] overflow-x-hidden selection:bg-[#667A62] selection:text-white">
@@ -605,21 +547,6 @@ const DonateNow = () => {
           background: #4A5C46;
         }
         
-        .step-content {
-          animation: fadeInUp 0.5s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
         .success-checkmark {
           animation: checkmark 0.5s ease-in-out forwards;
         }
@@ -664,304 +591,214 @@ const DonateNow = () => {
         </div>
       </section>
 
-      {/* PROFESSIONAL PROGRESS BAR - STICKY WITH CONNECTING LINES */}
-      <div className="sticky top-0 z-40 bg-white shadow-sm py-6 border-b border-gray-100">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="flex items-center justify-between">
-            {steps.map((step, idx) => (
-              <React.Fragment key={step.number}>
-                <div className="flex flex-col items-center relative z-10">
-                  <div 
-                    className={`
-                      w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300
-                      ${currentStep > step.number 
-                        ? 'bg-[#667A62] text-white' 
-                        : currentStep === step.number 
-                        ? 'bg-[#667A62] text-white ring-4 ring-[#667A62]/20' 
-                        : 'bg-gray-100 text-gray-400'
-                      }
-                    `}
-                  >
-                    {currentStep > step.number ? (
-                      <FiCheck className="w-5 h-5" />
-                    ) : (
-                      <span className="text-base font-bold">{step.number}</span>
-                    )}
-                  </div>
-                  
-                  <div className="mt-2 text-center">
-                    <p className={`text-xs font-semibold ${
-                      currentStep >= step.number ? 'text-[#667A62]' : 'text-gray-400'
-                    }`}>
-                      {step.title}
-                    </p>
-                  </div>
-                </div>
-                
-                {idx < steps.length - 1 && (
-                  <div className="flex-1 mx-4">
-                    <div className={`h-0.5 rounded-full transition-all duration-500 ${
-                      currentStep > step.number ? 'bg-[#667A62]' : 'bg-gray-200'
-                    }`} />
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* MAIN DONATION FORM */}
+      {/* MAIN DONATION FORM - SINGLE PAGE */}
       <div className="max-w-6xl mx-auto px-6 py-12">
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-3 gap-8 items-start">
             <div className="lg:col-span-2 space-y-6">
               
-              {/* STEP 1: Choose Cause */}
-              {currentStep === 1 && (
-                <div className="step-content space-y-6">
-                  <div className="bg-white border border-[#EAF6E3] rounded-2xl overflow-hidden shadow-sm">
-                    <div className="tabs-scrollbar overflow-x-auto overflow-y-hidden">
-                      <div className="flex">
-                        {donationCategories.map((cat) => (
-                          <button
-                            key={cat.id}
-                            type="button"
-                            onClick={() => {
-                              setSelectedCategory(cat.id);
-                              setSelectedSubCategory(cat.subCategories[0].name);
-                            }}
-                            className={`tab-btn flex flex-col items-center justify-center p-4 gap-1 text-gray-500 transition-all ${selectedCategory === cat.id ? 'active-tab font-bold' : 'hover:bg-[#F7F9F5]'}`}
-                          >
-                            <span className="text-xl">{cat.icon}</span>
-                            <span className="text-[9px] uppercase font-bold text-center leading-tight whitespace-nowrap">{cat.title}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
-                    <h3 className="font-serif text-lg font-bold text-[#2C3E2B] mb-4">Select Specific Cause</h3>
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {currentCat.subCategories.map((sub, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => setSelectedSubCategory(sub.name)}
-                          className={`subcat-card p-3 text-left flex flex-col gap-0.5 rounded-xl transition-all ${selectedSubCategory === sub.name ? 'subcat-selected' : ''}`}
-                        >
-                          <span className="text-xs font-bold text-[#2C3E2B]">{sub.name}</span>
-                          <span className="text-[9px] text-[#667A62] italic">{sub.impact}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-[#EAF6E3] to-[#F7F9F5] p-4 rounded-2xl border border-[#667A62]/20">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-[#667A62] rounded-full flex items-center justify-center">
-                        <FiStar className="text-white text-sm" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-[#2C3E2B]">Your Impact</p>
-                        <p className="text-sm text-[#667A62] font-serif">
-                          {currentCat.subCategories.find(s => s.name === selectedSubCategory)?.impact}
-                        </p>
-                      </div>
-                    </div>
+              {/* Choose Cause Section */}
+              <div className="bg-white border border-[#EAF6E3] rounded-2xl overflow-hidden shadow-sm">
+                <div className="tabs-scrollbar overflow-x-auto overflow-y-hidden">
+                  <div className="flex">
+                    {donationCategories.map((cat) => (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedCategory(cat.id);
+                          setSelectedSubCategory(cat.subCategories[0].name);
+                        }}
+                        className={`tab-btn flex flex-col items-center justify-center p-4 gap-1 text-gray-500 transition-all ${selectedCategory === cat.id ? 'active-tab font-bold' : 'hover:bg-[#F7F9F5]'}`}
+                      >
+                        <span className="text-xl">{cat.icon}</span>
+                        <span className="text-[9px] uppercase font-bold text-center leading-tight whitespace-nowrap">{cat.title}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
-              )}
+              </div>
 
-              {/* STEP 2: Donation Details */}
-              {currentStep === 2 && (
-                <div className="step-content space-y-6">
-                  <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="text-[10px] font-bold text-gray-400 uppercase mb-3 tracking-widest">Citizenship</h4>
-                        <div className="flex flex-col gap-2">
-                          {['Indian Citizen', 'NRI', 'Foreign National'].map(type => (
-                            <label key={type} className="flex items-center gap-3 cursor-pointer p-2 border border-transparent hover:bg-[#F7F9F5] rounded-xl transition-all">
-                              <input type="radio" name="citizen" checked={citizenship === type} onChange={() => setCitizenship(type)} className="w-3.5 h-3.5 accent-[#667A62]" />
-                              <span className="text-xs font-semibold">{type}</span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                      <div>
-                        <h4 className="text-[10px] font-bold text-gray-400 uppercase mb-3 tracking-widest">Donation Type</h4>
-                        <div className="flex gap-3">
-                          {['Once', 'Monthly'].map(type => (
-                            <button 
-                              key={type}
-                              type="button"
-                              onClick={() => setDonationType(type)}
-                              className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${donationType === type ? 'bg-[#667A62] text-white' : 'bg-white text-gray-600 border border-[#EAF6E3] hover:border-[#667A62]'}`}
-                            >
-                              {type}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
-                    <h3 className="font-serif text-lg font-bold text-[#2C3E2B] mb-1">Donation Amount</h3>
-                    <p className="text-[9px] text-gray-400 mb-5 uppercase tracking-wider">Help us reach our goals</p>
-                    
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-5">
-                      {amountOptions.map(amt => (
-                        <button
-                          key={amt}
-                          type="button"
-                          onClick={() => {setAmount(amt); setCustomAmount('');}}
-                          className={`py-2 text-xs font-bold rounded-xl transition-all ${amount === amt ? 'bg-[#667A62] text-white' : 'border border-[#EAF6E3] text-gray-500 bg-white hover:border-[#667A62]'}`}
-                        >
-                          ₹{amt.toLocaleString()}
-                        </button>
-                      ))}
-                    </div>
-                    
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#667A62] font-bold text-base">₹</span>
-                      <input 
-                        type="number" 
-                        placeholder="Enter Other Amount" 
-                        className="w-full pl-8 pr-3 py-2 border border-dashed border-gray-300 focus:border-[#667A62] focus:outline-none bg-white rounded-xl transition-all text-sm"
-                        value={customAmount}
-                        onChange={(e) => {setCustomAmount(e.target.value); setAmount(0);}}
-                      />
-                    </div>
-                  </div>
+              {/* Sub-Category Selection */}
+              <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
+                <h3 className="font-serif text-lg font-bold text-[#2C3E2B] mb-4">Select Specific Cause</h3>
+                <div className="grid md:grid-cols-2 gap-3">
+                  {currentCat.subCategories.map((sub, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setSelectedSubCategory(sub.name)}
+                      className={`subcat-card p-3 text-left flex flex-col gap-0.5 rounded-xl transition-all ${selectedSubCategory === sub.name ? 'subcat-selected' : ''}`}
+                    >
+                      <span className="text-xs font-bold text-[#2C3E2B]">{sub.name}</span>
+                      <span className="text-[9px] text-[#667A62] italic">{sub.impact}</span>
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
 
-              {/* STEP 3: Personal Info */}
-              {currentStep === 3 && (
-                <div className="step-content space-y-6">
-                  <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
-                    <h3 className="font-serif text-lg font-bold text-[#2C3E2B] mb-5">Personal Details</h3>
-                    <div className="grid md:grid-cols-2 gap-5">
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase">Full Name *</label>
-                        <input name="name" onChange={handleInputChange} type="text" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent text-sm" placeholder="Full Name" required />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase">Email Address *</label>
-                        <input name="email" onChange={handleInputChange} type="email" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent text-sm" placeholder="Email Address" required />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase">Phone Number</label>
-                        <input name="phone" onChange={handleInputChange} type="tel" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent text-sm" placeholder="Phone Number" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase">PAN Card (For Tax Receipt)</label>
-                        <input name="pan" onChange={handleInputChange} type="text" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent uppercase text-sm" placeholder="PAN Card" />
-                      </div>
-                    </div>
-
-                    <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-[#F7F9F5] rounded-xl border border-[#EAF6E3]">
-                      <div className="flex items-center gap-2">
-                        <input type="checkbox" id="80g" checked={request80G} onChange={(e) => setRequest80G(e.target.checked)} className="w-4 h-4 accent-[#667A62] cursor-pointer" />
-                        <label htmlFor="80g" className="text-xs font-semibold text-[#2C3E2B]">I require an 80G Tax Exemption Certificate</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 4: Confirm & Pay */}
-              {currentStep === 4 && (
-                <div className="step-content space-y-6">
-                  <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
-                    <h3 className="font-serif text-lg font-bold text-[#2C3E2B] mb-4">Review Your Donation</h3>
-                    
-                    <div className="space-y-3 mb-6">
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-xs text-gray-500">Cause:</span>
-                        <span className="text-xs font-semibold text-[#2C3E2B]">{selectedSubCategory}</span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-xs text-gray-500">Donation Type:</span>
-                        <span className="text-xs font-semibold text-[#2C3E2B]">{donationType}</span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-xs text-gray-500">Amount:</span>
-                        <span className="text-xs font-semibold text-[#2C3E2B]">₹{(Number(amount) || Number(customAmount)).toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-xs text-gray-500">Name:</span>
-                        <span className="text-xs font-semibold text-[#2C3E2B]">{donorDetails.name}</span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-xs text-gray-500">Email:</span>
-                        <span className="text-xs font-semibold text-[#2C3E2B]">{donorDetails.email}</span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-gray-100">
-                        <span className="text-xs text-gray-500">80G Certificate:</span>
-                        <span className="text-xs font-semibold text-[#2C3E2B]">{request80G ? 'Yes' : 'No'}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-[#F7F9F5] rounded-xl border border-[#EAF6E3]">
-                      <div className="flex items-center gap-3">
-                        <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] px-4 py-2 rounded-lg shadow-sm">
-                          <span className="text-white font-bold text-base tracking-wider">
-                            {num1} + {num2} = ?
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={generateCaptcha}
-                          className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all"
-                          title="Refresh Captcha"
-                        >
-                          <FiRefreshCw size={14} className="text-[#667A62]" />
-                        </button>
-                        <input 
-                          type="text" 
-                          value={captchaInput}
-                          onChange={(e) => {
-                            setCaptchaInput(e.target.value);
-                            setCaptchaError('');
-                          }}
-                          className={`w-16 border-b outline-none text-center text-xs font-bold text-[#667A62] py-1.5 ${captchaError ? 'border-red-500' : 'border-gray-300 focus:border-[#667A62]'}`} 
-                          maxLength="2"
-                          placeholder="?"
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="agreeTermsStep4" 
-                          checked={agreeTerms} 
-                          onChange={(e) => setAgreeTerms(e.target.checked)} 
-                          className="w-4 h-4 accent-[#667A62] cursor-pointer" 
-                        />
-                        <label htmlFor="agreeTermsStep4" className="text-[9px] text-gray-500">
-                          I agree to the{' '}
-                          <button 
-                            type="button"
-                            onClick={() => setShowTermsModal(true)}
-                            className="text-[#667A62] font-semibold underline"
-                          >
-                            Terms & Conditions
-                          </button>
+              {/* Donation Details */}
+              <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
+                <h3 className="font-serif text-lg font-bold text-[#2C3E2B] mb-4">Donation Details</h3>
+                
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <h4 className="text-[10px] font-bold text-gray-400 uppercase mb-3 tracking-widest">Citizenship</h4>
+                    <div className="flex flex-col gap-2">
+                      {['Indian Citizen', 'NRI', 'Foreign National'].map(type => (
+                        <label key={type} className="flex items-center gap-3 cursor-pointer p-2 border border-transparent hover:bg-[#F7F9F5] rounded-xl transition-all">
+                          <input type="radio" name="citizen" checked={citizenship === type} onChange={() => setCitizenship(type)} className="w-3.5 h-3.5 accent-[#667A62]" />
+                          <span className="text-xs font-semibold">{type}</span>
                         </label>
-                      </div>
+                      ))}
                     </div>
-                    {captchaError && (
-                      <p className="text-red-500 text-[9px] text-center">{captchaError}</p>
-                    )}
-                    {paymentError && (
-                      <p className="text-red-500 text-xs text-center mt-2">{paymentError}</p>
-                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-bold text-gray-400 uppercase mb-3 tracking-widest">Donation Type</h4>
+                    <div className="flex gap-3">
+                      {['Once', 'Monthly'].map(type => (
+                        <button 
+                          key={type}
+                          type="button"
+                          onClick={() => setDonationType(type)}
+                          className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${donationType === type ? 'bg-[#667A62] text-white' : 'bg-white text-gray-600 border border-[#EAF6E3] hover:border-[#667A62]'}`}
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              )}
+
+                <h4 className="text-[10px] font-bold text-gray-400 uppercase mb-3 tracking-widest">Donation Amount</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-5">
+                  {amountOptions.map(amt => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => {setAmount(amt); setCustomAmount('');}}
+                      className={`py-2 text-xs font-bold rounded-xl transition-all ${amount === amt ? 'bg-[#667A62] text-white' : 'border border-[#EAF6E3] text-gray-500 bg-white hover:border-[#667A62]'}`}
+                    >
+                      ₹{amt.toLocaleString()}
+                    </button>
+                  ))}
+                </div>
+                
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#667A62] font-bold text-base">₹</span>
+                  <input 
+                    type="number" 
+                    placeholder="Enter Other Amount" 
+                    className="w-full pl-8 pr-3 py-2 border border-dashed border-gray-300 focus:border-[#667A62] focus:outline-none bg-white rounded-xl transition-all text-sm"
+                    value={customAmount}
+                    onChange={(e) => {setCustomAmount(e.target.value); setAmount(0);}}
+                  />
+                </div>
+              </div>
+
+              {/* Personal Details */}
+              <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
+                <h3 className="font-serif text-lg font-bold text-[#2C3E2B] mb-4">Personal Details</h3>
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase">Full Name *</label>
+                    <input name="name" onChange={handleInputChange} type="text" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent text-sm" placeholder="Full Name" required />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase">Email Address *</label>
+                    <input name="email" onChange={handleInputChange} type="email" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent text-sm" placeholder="Email Address" required />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase">Phone Number</label>
+                    <input name="phone" onChange={handleInputChange} type="tel" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent text-sm" placeholder="Phone Number" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-400 uppercase">PAN Card (For Tax Receipt)</label>
+                    <input name="pan" onChange={handleInputChange} type="text" className="w-full border-b py-1.5 outline-none focus:border-[#667A62] bg-transparent uppercase text-sm" placeholder="PAN Card" />
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-[#F7F9F5] rounded-xl border border-[#EAF6E3]">
+                  <div className="flex items-center gap-2">
+                    <input type="checkbox" id="80g" checked={request80G} onChange={(e) => setRequest80G(e.target.checked)} className="w-4 h-4 accent-[#667A62] cursor-pointer" />
+                    <label htmlFor="80g" className="text-xs font-semibold text-[#2C3E2B]">I require an 80G Tax Exemption Certificate</label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Captcha & Terms */}
+              <div className="bg-white p-6 rounded-2xl border border-[#EAF6E3] shadow-sm">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-[#F7F9F5] rounded-xl border border-[#EAF6E3]">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-gradient-to-r from-[#667A62] to-[#4A5C46] px-4 py-2 rounded-lg shadow-sm">
+                      <span className="text-white font-bold text-base tracking-wider">
+                        {num1} + {num2} = ?
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={generateCaptcha}
+                      className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all"
+                      title="Refresh Captcha"
+                    >
+                      <FiRefreshCw size={14} className="text-[#667A62]" />
+                    </button>
+                    <input 
+                      type="text" 
+                      value={captchaInput}
+                      onChange={(e) => {
+                        setCaptchaInput(e.target.value);
+                        setCaptchaError('');
+                      }}
+                      className={`w-16 border-b outline-none text-center text-xs font-bold text-[#667A62] py-1.5 ${captchaError ? 'border-red-500' : 'border-gray-300 focus:border-[#667A62]'}`} 
+                      maxLength="2"
+                      placeholder="?"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="checkbox" 
+                      id="agreeTerms" 
+                      checked={agreeTerms} 
+                      onChange={(e) => setAgreeTerms(e.target.checked)} 
+                      className="w-4 h-4 accent-[#667A62] cursor-pointer" 
+                    />
+                    <label htmlFor="agreeTerms" className="text-[9px] text-gray-500">
+                      I agree to the{' '}
+                      <button 
+                        type="button"
+                        onClick={() => setShowTermsModal(true)}
+                        className="text-[#667A62] font-semibold underline"
+                      >
+                        Terms & Conditions
+                      </button>
+                    </label>
+                  </div>
+                </div>
+                {captchaError && (
+                  <p className="text-red-500 text-[9px] text-center mt-2">{captchaError}</p>
+                )}
+                {paymentError && (
+                  <p className="text-red-500 text-xs text-center mt-2">{paymentError}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isProcessing}
+                  className={`w-full mt-4 py-3 bg-gradient-to-r from-[#667A62] to-[#4A5C46] text-white font-semibold text-sm rounded-xl hover:shadow-lg transition-all flex items-center justify-center gap-2 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                  {isProcessing ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <FiShield size={14} /> Complete Donation
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Sidebar Summary */}
@@ -1016,46 +853,6 @@ const DonateNow = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between gap-4 mt-8">
-            {currentStep > 1 && (
-              <button
-                type="button"
-                onClick={handlePrevious}
-                className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 font-semibold text-sm rounded-xl hover:border-[#667A62] hover:text-[#667A62] transition-all flex items-center gap-2"
-              >
-                <FiArrowLeft size={14} /> Previous
-              </button>
-            )}
-            
-            {currentStep < 4 ? (
-              <button
-                type="button"
-                onClick={handleNext}
-                className="ml-auto px-6 py-2.5 bg-[#667A62] text-white font-semibold text-sm rounded-xl hover:bg-[#4A5C46] transition-all flex items-center gap-2"
-              >
-                Next Step <FiArrowRight size={14} />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                disabled={isProcessing}
-                className={`ml-auto px-8 py-2.5 bg-gradient-to-r from-[#667A62] to-[#4A5C46] text-white font-semibold text-sm rounded-xl hover:shadow-lg transition-all flex items-center gap-2 ${isProcessing ? 'opacity-70 cursor-not-allowed' : ''}`}
-              >
-                {isProcessing ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <FiShield size={14} /> Complete Donation
-                  </>
-                )}
-              </button>
-            )}
           </div>
         </form>
       </div>
